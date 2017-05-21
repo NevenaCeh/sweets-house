@@ -8,9 +8,21 @@
   )
 )
 
-(defn home []
-  (render-file "templates/homepage.html" {:title ""})
+(defn authenticated [session]
+  (authenticated? session))
+
+(defn home [session]
+  (cond
+    (not (authenticated session))
+     (redirect "/login")
+    :else
+     (render-file "templates/homepage.html"
+                 {:title "Home"
+                  :user (:identity session)
+                 })
+  )
 )
 
+
 (defroutes home-routes
-  (GET "/" [] (home)))
+  (GET "/" request (home (:session request))))

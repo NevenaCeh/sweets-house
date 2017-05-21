@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Slatka kuća</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/business-casual.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+    <div class="brand">Slatka kuća</div>
+    <div class="address-bar">"Život bez užitaka je življenje radi reda. Uživajte u trenutku"</div>
+
+    <div class="container">
+        <div class="row">
+            <div class="box">
+                <div class="col-lg-12 text-center">
+                    <div id="carousel-example-generic" class="carousel slide">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators hidden-xs">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img class="img-responsive img-full" src="img/slika1.jpg" alt="">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive img-full" src="img/slika2.jpg" alt="">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive img-full" src="img/slika3.jpg" alt="">
+                            </div>
+                        </div>
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                            <span class="icon-prev"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                            <span class="icon-next"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      <div class="row">
+            <div class="box">
+                <div class="col-lg-12">
+                    <hr>
+                    <h2 class="intro-text text-center">
+                        <strong>Registrujte se</strong>
+                    </h2>
+                    <hr>
+                    <h2 style="color:red;">{{error}}</h2>
+                    <form role="form" action="register" method="POST">
+                        <div class="row">
+                          <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                              <input type="text" name="ime" id="ime" class="form-control input-sm" placeholder="Ime">
+                            </div>
+                          </div>
+                          <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                              <input type="text" name="prezime" id="prezime" class="form-control input-sm" placeholder="Prezime">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Adresa">
+                        </div>
+
+                        <div class="row">
+                          <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                              <input type="text" name="username" id="username" class="form-control input-sm" placeholder="Korisnicko ime">
+                            </div>
+                          </div>
+                          <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                              <input type="password" name="password" id="password" class="form-control input-sm" placeholder="Korisnicka sifra">
+                            </div>
+                          </div>
+                        </div>
+
+                        <input type="submit" value="Registracija" class="btn btn-info btn-block">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- /.container -->
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>Copyright &copy; Your Website 2014</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Script to Activate the Carousel -->
+    <script>
+    $('.carousel').carousel({
+        interval: 5000 //changes the speed
+    })
+    </script>
+
+</body>
+
+</html>

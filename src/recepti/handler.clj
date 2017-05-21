@@ -5,7 +5,12 @@
             [hiccup.middleware :refer [wrap-base-url]]
             [compojure.handler :as handler]
             [compojure.route :as route]
-            [recepti.routes.home :refer [home-routes]]))
+            [buddy.auth.backends.session :refer [session-backend]]
+            [buddy.auth.middleware :refer [wrap-authentication wrap-authorization]]
+            [buddy.auth :refer [authenticated? throw-unauthorized]]
+            [recepti.routes.auth :refer [auth-routes]]
+            [recepti.routes.home :refer [home-routes]]
+            [recepti.routes.recepies :refer [recepti-routes]]))
 
 (defn init []
   (println "recepti se pokrece"))
@@ -13,11 +18,15 @@
 (defn destroy []
   (println "recepti se gase"))
 
+(def backend (session-backend))
+
 (defroutes app-routes
   (route/resources "/")
   (route/not-found "Not Found"))
 
 (def app
-  (-> (routes home-routes app-routes)
+  (-> (routes auth-routes recepti-routes home-routes app-routes)
       (handler/site)
+      (wrap-authorization backend)
+      (wrap-authentication backend)
       (wrap-base-url)))
