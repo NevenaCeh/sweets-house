@@ -4,11 +4,15 @@
             [clojure.string :refer [blank?]]
             [recepti.models.db :as db]
             [ring.util.response :refer [redirect]]
+            ;;[struct.core :as st]
   )
 )
 
 (defn get-login-page [&[error]]
   (render-file "templates/login.html" {:error error}))
+
+(defn get-admin-login-page [&[error]]
+  (render-file "templates/admin-login.html" {:error error}))
 
 (defn handle-login [{:keys [params session] request :request}]
   (let [user (first (db/vrati-korisnika (:username params) (:password params)))]
@@ -17,37 +21,52 @@
       (assoc (redirect "/"):session (assoc session :identity user))
       (render-file "templates/login.html" {:error "Pogresno uneti kredencijali!!!"}))))
 
+(defn handle-admin-login [{:keys [params session] request :request}]
+  (let [admin (first (db/vrati-admina (:username params) (:password params)))]
+    (println (some? admin))
+    ;;(if (some? admin)
+      (assoc (redirect "/admin"):session (assoc session :identity admin))      ))
+      ;;(render-file "templates/admin-login.html" {:error "Pogresno uneti kredencijali za admina!!!"}))))
+
 (defn logout
   [request]
   (-> (redirect "/login")
       (assoc :session {})))
 
+(defn logout-admin
+  [request]
+  (-> (redirect "/adminlogin")
+      (assoc :session {})))
+
 (defn get-registration-page [&[error]]
   (render-file "templates/register.html" {:error error}))
 
+
+;;(defn handle-registration [{:keys [params session] request :request}]
+  ;;    (db/dodaj-korisnika (assoc (:params request)))
+    ;;  (assoc (redirect "/") :session (assoc session :identity (:username params))))
+
 (defn handle-registration [{:keys [params session] request :request}]
-  (let [ime (:ime (:params request))
-        prezime (:prezime (:params request))
-        email (:email (:params request))
-        username (:username (:params request))
-        password (:password (:params request))
-        session (:session request)]
-  (if (or (blank? ime) (blank? prezime) (blank? email) (blank? username) (blank? password))
-    (render-file "templates/register.html" "Molimo Vas da popunite sva polja!")
-  (do
-    (try
-      (db/dodaj-korisnika (assoc (:params request)))
-      (assoc (redirect "/"):session (assoc session :identity username))
-      (catch Exception  e (render-file "templates/register.html" {:error (str e "Vec postoji korisnik: " username) }))))))
+  (let [ime (:ime params)
+        prezime (:prezime params)
+        email (:email params)
+        username (:username params)
+        password (:password params)]
+      (db/dodaj-korisnika ime prezime email username password)
+      (let [user (first (db/vrati-korisnika (:username username) (:password password)))]
+        (assoc (redirect "/"):session (assoc session :identity user))
+      )
 
-  ;;(assoc (redirect "/"):session (assoc session :identity ""))
+  )
 )
-
 
 (defroutes auth-routes
   (GET "/login" [] (get-login-page))
+  (GET "/adminlogin" [] (get-admin-login-page))
   (POST "/login" request (handle-login request))
+  (POST "/adminlogin" request (handle-admin-login request))
   (GET "/logout" request (logout request))
+  (GET "/adminlogout" request (logout-admin request))
   (GET "/register" [] (get-registration-page))
   (POST "/register" request (handle-registration request))
 )

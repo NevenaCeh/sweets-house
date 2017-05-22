@@ -28,42 +28,6 @@
     <div class="brand">Slatka kuća</div>
     <div class="address-bar">"Život bez užitaka je življenje radi reda. Uživajte u trenutku"</div>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-default" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
-                <a class="navbar-brand" href="index.html">Business Casual</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="/">Početna</a>
-                    </li>
-                    <li>
-                        <a href="/recepti">Knjiga recepata</a>
-                    </li>
-                    <li>
-                        <a href="/knjigautisaka">Knjiga utisaka</a>
-                    </li>
-                    <li>
-                        <a href="/logout">Izloguj se {{user.username}}</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
-
     <div class="container">
         <div class="row">
             <div class="box">
@@ -105,37 +69,23 @@
                 <div class="col-lg-12">
                     <hr>
                     <h2 class="intro-text text-center">
-                        <strong>Dodaj novi recept</strong>
+                        <strong>Uloguj se za admina</strong>
                     </h2>
                     <hr>
                   <h2 style="color:red;">{{error}}</h2>
-                    <form role="form"  method="POST" action = "/addrecipe">
-                                        <div class="form-group">
-                                            <label>Naziv recepta</label>
-                                                <input class="form-control" name="naziv" id="subsystemname" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Sastojci</label>
-                                            <textarea class="form-control" rows="5" name="sastojci" required></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Priprema</label>
-                                           <textarea class="form-control" rows="5" name="opis" required></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Slika</label>
-                                           <input type="file" name="slika" class="btn btn-default">
-                                        </div>
-                                        <div class="form-group" hidden>
-                                            <label>Ostavio</label>
-                                           <input type="text" class="form-control" name="receptod" value="{{user.username}}"></textarea>
-                                        </div>
-                                            <button type="submit" class="btn btn-default">Dodaj novi recept</button>
-                                            <button type="reset" class="btn btn-default">Resetuj polja</button>
-                                    </form>
-                  <div>
-                    <a href="/addrecipe">Dodaj novi recept</a>
-                  </div>
+                    <form role="form" action="adminlogin" method="POST">
+                            <div class="form-group input-group">
+                                <span class="input-group-addon"><i class="fa fa-tag"  ></i></span>
+                                <input type="text" class="form-control" placeholder="Korisničko ime" name="username" />
+                            </div>
+                            <div class="form-group input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
+                                <input type="password" class="form-control"  placeholder="Korisnička šifra" name="password" />
+                            </div>
+                            <div class="login">
+                                <input type="submit" value="LOGIN" class="btn input-block-level form-control" />
+                            </div>
+                    </form>
                 </div>
             </div>
         </div>

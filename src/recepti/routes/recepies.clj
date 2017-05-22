@@ -26,9 +26,21 @@
 (defn get-page-add-recipe [{:keys [params session] request :request}]
   (render-file "templates/novirecept.html" {:user (:identity session)}))
 
-(defn handle-add-recipe [{:keys [params session] request :request} slika]
-  (db/dodaj-recept params :napisano (new java.util.Date))
-  (redirect "/addrecipe")
+;(defn handle-add-recipe [{:keys [params session] request :request} slika]
+ ; (db/dodaj-recept params :napisano (new java.util.Date))
+ ; (redirect "/addrecipe"))
+
+(defn handle-add-recipe [{:keys [params session] request :request}]
+  (let [naziv (:naziv params)
+        sastojci (:sastojci params)
+        opis (:opis params)
+        napisano (new java.util.Date)
+        slika (str "/slike recepata/" (:filename (:slika params)))
+        receptod (:receptod params)
+        dozvoljeno false
+        ]
+      (db/dodaj-recept naziv sastojci opis slika napisano receptod dozvoljeno)
+        (redirect "/knjigautisaka"))
 )
 
 (defroutes recepti-routes

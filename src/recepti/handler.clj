@@ -10,7 +10,10 @@
             [buddy.auth :refer [authenticated? throw-unauthorized]]
             [recepti.routes.auth :refer [auth-routes]]
             [recepti.routes.home :refer [home-routes]]
-            [recepti.routes.recepies :refer [recepti-routes]]))
+            [recepti.routes.recepies :refer [recepti-routes]]
+            [recepti.routes.utisci :refer [utisci-routes]]
+            [recepti.routes.administracija :refer [administracija-routes]]
+            ))
 
 (defn init []
   (println "recepti se pokrece"))
@@ -25,7 +28,7 @@
   (route/not-found "Not Found"))
 
 (def app
-  (-> (routes auth-routes recepti-routes home-routes app-routes)
+  (-> (routes auth-routes recepti-routes utisci-routes administracija-routes home-routes app-routes)
       (handler/site)
       (wrap-authorization backend)
       (wrap-authentication backend)
