@@ -14,19 +14,40 @@
 (defn get-admin-login-page [&[error]]
   (render-file "templates/admin-login.html" {:error error}))
 
-(defn handle-login [{:keys [params session] request :request}]
+(defn handle-admin-login [{:keys [params session] request :request}]
+  (println params)
+  (let [admin (first (db/vrati-admina (:username params) (:password params)))]
+    (println (some? admin))
+    (if (some? admin)
+      (assoc (redirect "/admin"):session (assoc session :identity admin)))
+      (render-file "templates/admin-login.html" {:error "Pogresno uneti kredencijali za admina!!!"})))
+
+(defn handle-user-login [{:keys [params session] request :request}]
   (let [user (first (db/vrati-korisnika (:username params) (:password params)))]
     (println (some? user))
     (if (some? user)
-      (assoc (redirect "/"):session (assoc session :identity user))
-      (render-file "templates/login.html" {:error "Pogresno uneti kredencijali!!!"}))))
+      (assoc (redirect "/"):session (assoc session :identity user)))
+      (render-file "templates/login.html" {:error "Pogresno uneti kredencijali!!!"})))
 
-(defn handle-admin-login [{:keys [params session] request :request}]
-  (let [admin (first (db/vrati-admina (:username params) (:password params)))]
-    (println (some? admin))
-    ;;(if (some? admin)
-      (assoc (redirect "/admin"):session (assoc session :identity admin))      ))
-      ;;(render-file "templates/admin-login.html" {:error "Pogresno uneti kredencijali za admina!!!"}))))
+(defn handle-login [{:keys [params session] request :request}]
+  (cond
+    (or (= (:username params) "admin") (= (:password params) "admin"))
+    (do
+         (println "Jeste admin user")
+         (let [admin (first (db/vrati-admina (:username params) (:password params)))]
+                (println (some? admin))
+         (if (some? admin)
+                (assoc (redirect "/admin"):session (assoc session :identity admin))
+                (render-file "templates/login.html" {:error "Pogresno uneti kredencijali za admina!!!"})))
+    )
+    :else (do
+          (println "Nije admin user")
+          (let [user (first (db/vrati-korisnika (:username params) (:password params)))]
+          (println (some? user))
+          (if (some? user)
+            (assoc (redirect "/"):session (assoc session :identity user))
+            (render-file "templates/login.html" {:error "Pogresno uneti kredencijali!!!"})))
+          )))
 
 (defn logout
   [request]
@@ -35,7 +56,7 @@
 
 (defn logout-admin
   [request]
-  (-> (redirect "/adminlogin")
+  (-> (redirect "/login")
       (assoc :session {})))
 
 (defn get-registration-page [&[error]]

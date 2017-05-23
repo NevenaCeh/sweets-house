@@ -1,11 +1,8 @@
-uradjeno
-login
-registracija
-logout
-dodavanje utisaka
-brisanje od strane admina
-brisanje od strane usera
-
 za uraditi
 izmene
 upload slika
+dodavanje recepata
+komentari i lajkovi na recepte
+admin radnje
+
+

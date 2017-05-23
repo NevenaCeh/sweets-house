@@ -5,6 +5,11 @@
             [ring.util.response :refer [redirect]]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
   )
+  (:import [java.io File FileInputStream FileOutputStream]
+[java.awt.image AffineTransformOp BufferedImage]
+java.awt.RenderingHints
+java.awt.geom.AffineTransform
+javax.imageio.ImageIO)
 )
 
 (def galleries "galleries")
