@@ -62,11 +62,6 @@
 (defn get-registration-page [&[error]]
   (render-file "templates/register.html" {:error error}))
 
-
-;;(defn handle-registration [{:keys [params session] request :request}]
-  ;;    (db/dodaj-korisnika (assoc (:params request)))
-    ;;  (assoc (redirect "/") :session (assoc session :identity (:username params))))
-
 (defn handle-registration [{:keys [params session] request :request}]
   (let [ime (:ime params)
         prezime (:prezime params)
@@ -83,11 +78,11 @@
 
 (defroutes auth-routes
   (GET "/login" [] (get-login-page))
-  (GET "/adminlogin" [] (get-admin-login-page))
+  ;(GET "/adminlogin" [] (get-admin-login-page))
   (POST "/login" request (handle-login request))
-  (POST "/adminlogin" request (handle-admin-login request))
+  ;(POST "/adminlogin" request (handle-admin-login request))
   (GET "/logout" request (logout request))
-  (GET "/adminlogout" request (logout-admin request))
+  ;(GET "/adminlogout" request (logout-admin request))
   (GET "/register" [] (get-registration-page))
   (POST "/register" request (handle-registration request))
 )

@@ -12,28 +12,14 @@ java.awt.geom.AffineTransform
 javax.imageio.ImageIO)
 )
 
-(def galleries "galleries")
+(defn authenticated [session]
+  (authenticated? session))
 
-
-;;(defn gallery-path []
-;;(str galleries File/separator (session/get :user)))
-
-;(defn save-thumbnail [{:keys [filename]}]
-;(let [path (str (gallery-path) File/separator)]
-;(ImageIO/write
-;(scale-image (io/input-stream (str path filename)))
-;"jpeg"
-;(File. (str path thumb-prefix filename)))))
-
-(defn get-page-of-all-recepies [{:keys [params session] request :request}]
-  (render-file "templates/recepti.html" {:recepti (db/vrati-recepte) :user (:identity session)}))
+(defn get-page-of-all-recepies [{:keys [params session] request :request} &[poruka]]
+  (render-file "templates/recepti.html" {:recepti (db/vrati-recepte) :user (:identity session) :authenticated (str (authenticated session)) :poruka poruka}))
 
 (defn get-page-add-recipe [{:keys [params session] request :request}]
-  (render-file "templates/novirecept.html" {:user (:identity session)}))
-
-;(defn handle-add-recipe [{:keys [params session] request :request} slika]
- ; (db/dodaj-recept params :napisano (new java.util.Date))
- ; (redirect "/addrecipe"))
+  (render-file "templates/novirecept.html" {:user (:identity session) :authenticated (str (authenticated session))}))
 
 (defn handle-add-recipe [{:keys [params session] request :request}]
   (let [naziv (:naziv params)
@@ -45,13 +31,22 @@ javax.imageio.ImageIO)
         dozvoljeno false
         ]
       (db/dodaj-recept naziv sastojci opis slika napisano receptod dozvoljeno)
-        (redirect "/knjigautisaka"))
-)
+        ;(redirect "/recepti" )
+     (assoc (redirect "/recepti") :poruka "Cekamo vest od administratora!")
+    ))
+
+(defn get-page-of-recipe [{:keys [params session] request :request}]
+  (println (:identity session))
+  (render-file "templates/recept-prikaz.html"
+               {:recept (first (db/vrati-recept-id (:receptID params)))
+                :user (:identity session)
+                :authenticated (str (authenticated session))}))
 
 (defroutes recepti-routes
   (GET "/recepti" request (get-page-of-all-recepies request))
   (GET "/addrecipe" request (get-page-add-recipe request))
   (POST "/addrecipe" request (handle-add-recipe request))
+  (GET "/vidirecept/:id" request (get-page-of-recipe request))
 )
 
 ( comment

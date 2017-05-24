@@ -23,15 +23,25 @@
 )
 
 (defn get-all-impressions-page [{:keys [params session] request :request}]
-  (render-file "templates/admin-utisci.html" {:utisci (db/vrati-utiske) :admin (:identity session)}))
+  (render-file "templates/admin-utisci.html" {:utisci (db/vrati-utiske) :admin (:identity session) :authenticated (str (authenticated session))}))
+
+(defn get-all-recepies-page [{:keys [params session] request :request}]
+  (render-file "templates/admin-recepti.html" {:recepti (db/vrati-sve-recepte) :admin (:identity session) :authenticated (str (authenticated session))}))
 
 (defn delete-impression [{:keys [params session] request :request}]
   (println params)
   (db/obrisi-utisak (:id params))
   (redirect "/sviutisci"))
 
+(defn edit-receipt [{:keys [params session] request :request}]
+  (println params)
+  (db/dozvoli-recept (:id params))
+  (redirect "/svirecepti"))
+
 (defroutes administracija-routes
   (GET "/admin" request (get-admin-page request))
   (GET "/sviutisci" request (get-all-impressions-page request))
+  (GET "/svirecepti" request (get-all-recepies-page request))
   (GET "/obrisiutisak/:id" request (delete-impression request))
+  (GET "/dozvoli/:id" request (edit-receipt request))
 )

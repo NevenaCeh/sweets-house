@@ -53,6 +53,10 @@
   (select utisak
   (order :datum :DESC)))
 
+(defn vrati-sve-recepte []
+  (select recept
+  (order :napisano :DESC)))
+
 (defn vrati-poslednji-utisak []
   (select count utisak))
 
@@ -79,6 +83,15 @@
   (delete utisak
   (where {:idUtiska id})))
 
+(defn dozvoli-recept [id]
+  (update recept
+  (set-fields {:dozvoljeno true})
+  (where {:receptID id})))
+
 (defn vrati-utisak [id]
   (select utisak
   (where {:idUtiska id})))
+
+(defn vrati-recept-id [id]
+  (select recept
+  (where {:receptID id})))
