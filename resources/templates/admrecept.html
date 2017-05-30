@@ -46,16 +46,16 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="/">Početna</a>
+                        <a href="/admin">Početna</a>
                     </li>
                     <li>
-                        <a href="/recepti">Knjiga recepata</a>
+                        <a href="/svirecepti">Uredi recepte</a>
                     </li>
                     <li>
-                        <a href="/knjigautisaka">Knjiga utisaka</a>
+                        <a href="/sviutisci">Uredi utiske</a>
                     </li>
                     <li>
-                        <a href="/logout">Izloguj se {{user.username}}</a>
+                        <a href="/adminlogout">Izloguj se {{admin.username}}</a>
                     </li>
                 </ul>
             </div>
@@ -105,27 +105,27 @@
                 <div class="col-lg-12">
                     <hr>
                     <h2 class="intro-text text-center">
-                        <strong>Svi recepti</strong>
+                        <strong>{{recept.naziv}}</strong>
                     </h2>
                     <hr>
-                  <img src="/slike recepata/slika4.jpg" class="img-responsive zoom-img"/>
-                  <h2 style="color:green;">{{poruka}}</h2>
-                    <div class="list-group">
-                      {% for recept in recepti %}
-                      <a href="/vidirecept/{{recept.receptID}}">
-                        <img src="{{recept.slika}}" class="img-responsive zoom-img"/>
-                        <h4 class="list-group-item-heading">{{recept.naziv}}</h4>
-                        <p class="list-group-item-text">Date released: {{recept.napisano}}</p>
+                  <div class="col-md-12">
+                    <div>
+                        <p>
+                          {{recept.sastojci}}
+                      </p>
+                      <p>
+                          {{recept.opis}}
+                      </p>
+                    </div>
+                    {% ifequal recept.dozvoljeno true %}
+                      <a href="/zabrani/{{recept.receptID}}">Zabrani recept</a>
+                    {% else %}
+                      <a href="/dozvoli/{{recept.receptID}}">Dozvoli recept</a>
+                    {% endifequal %}
 
-                        <br>
+                    <a href="/obrisi/{{receptID.receptID}}">Obrisi recept</a>
 
-                      </a>
-
-                {% endfor %}
-              </div>
-                  <div>
-                    <a href="/addrecipe">Dodaj novi recept</a>
-                  </div>
+                    </div>
                 </div>
             </div>
         </div>

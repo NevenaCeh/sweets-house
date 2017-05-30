@@ -40,10 +40,19 @@
       (render-file "templates/dodajutisak.html" {:user (:identity session) :authenticated (str (authenticated session)) :utisak (first (db/vrati-utisak (:id params)))})
 )
 
+(defn handle-edit-own-impression [{:keys [params session] request :request}]
+  (let [naziv (:naziv params)
+        opis (:opis params)
+        ]
+      (db/izmeni-utisak (:id params) naziv opis)
+        (redirect "/knjigautisaka"))
+)
+
 (defroutes utisci-routes
   (GET "/knjigautisaka" request (get-page-of-all-impressions request))
   (GET "/addutisak" request (get-page-add-impression request))
   (POST "/addutisak" request (handle-add-impression request))
   (GET "/obrisisvoj/:id" request (delete-own-impression request))
   (GET "/izmenisvoj/:id" request (edit-own-impression-get-page request))
+  (POST "/izmenisvoj/:id" request (handle-edit-own-impression request))
 )

@@ -11,11 +11,11 @@
                      :user "admin"
                      :password "admin"}))
 
-(def dbs {:classname "com.mysql.jdbc.Driver"
-         :subprotocol "mysql"
-         :subname "//localhost:3306/recepti"
-         :user "admin"
-         :password "admin"})
+;(def dbs {:classname "com.mysql.jdbc.Driver"
+ ;        :subprotocol "mysql"
+  ;       :subname "//localhost:3306/recepti"
+   ;      :user "admin"
+    ;     :password "admin"})
 
 (defentity user
   (table :korisnici))
@@ -49,6 +49,9 @@
 (defn vrati-recepte []
   (select recept (where {:dozvoljeno true}) (order :napisano :DESC)))
 
+(defn vrati-zabranjene-recepte[]
+  (select recept (where {:dozvoljeno false}) (order :napisano :DESC)))
+
 (defn vrati-utiske []
   (select utisak
   (order :datum :DESC)))
@@ -71,6 +74,13 @@
            :dozvoljeno dozvoljeno
             })))
 
+(defn izmeni-utisak [id naziv opis]
+  (update utisak
+  (set-fields {:naziv naziv
+               :opis opis
+               })
+  (where {:idUtiska id})))
+
 (defn dodaj-utisak [naziv opis ostavio datum]
   (insert utisak
   (values {:naziv naziv
@@ -83,9 +93,18 @@
   (delete utisak
   (where {:idUtiska id})))
 
+(defn obrisi-recept [id]
+  (delete recept
+  (where {:receptID id})))
+
 (defn dozvoli-recept [id]
   (update recept
   (set-fields {:dozvoljeno true})
+  (where {:receptID id})))
+
+(defn zabrani-recept [id]
+  (update recept
+  (set-fields {:dozvoljeno false})
   (where {:receptID id})))
 
 (defn vrati-utisak [id]

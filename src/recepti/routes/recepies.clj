@@ -4,6 +4,7 @@
             [recepti.models.db :as db]
             [ring.util.response :refer [redirect]]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
+            [clojure.java.io :as io]
   )
   (:import [java.io File FileInputStream FileOutputStream]
 [java.awt.image AffineTransformOp BufferedImage]
@@ -22,6 +23,7 @@ javax.imageio.ImageIO)
   (render-file "templates/novirecept.html" {:user (:identity session) :authenticated (str (authenticated session))}))
 
 (defn handle-add-recipe [{:keys [params session] request :request}]
+  ;(upload-picture (:slika params))
   (let [naziv (:naziv params)
         sastojci (:sastojci params)
         opis (:opis params)
@@ -37,16 +39,24 @@ javax.imageio.ImageIO)
 
 (defn get-page-of-recipe [{:keys [params session] request :request}]
   (println (:identity session))
+  ;;(println (first (db/vrati-recept-id (:id params))))
   (render-file "templates/recept-prikaz.html"
-               {:recept (first (db/vrati-recept-id (:receptID params)))
+               {:recept (first (db/vrati-recept-id (:id params)))
                 :user (:identity session)
                 :authenticated (str (authenticated session))}))
+
+(defn delete-recepy [{:keys [params session] request :request}]
+  (println "Udje u metodu")
+  (println params)
+  (db/obrisi-recept (:id params))
+  (redirect "/svirecepti"))
 
 (defroutes recepti-routes
   (GET "/recepti" request (get-page-of-all-recepies request))
   (GET "/addrecipe" request (get-page-add-recipe request))
   (POST "/addrecipe" request (handle-add-recipe request))
   (GET "/vidirecept/:id" request (get-page-of-recipe request))
+  ;;(GET "/obrisirecept/:id" request (delete-recepy request))
 )
 
 ( comment

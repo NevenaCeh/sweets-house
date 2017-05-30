@@ -1,8 +1,6 @@
 za uraditi
 izmene
 upload slika
-dodavanje recepata
 komentari i lajkovi na recepte
-admin radnje
-
-
+admin radnje - brisanje recepata
+pregled recepata!!!

@@ -55,7 +55,7 @@
                         <a href="/sviutisci">Uredi utiske</a>
                     </li>
                     <li>
-                        <a href="/adminlogout">Izloguj se {{admin.username}}</a>
+                        <a href="/logout">Izloguj se {{admin.username}}</a>
                     </li>
                 </ul>
             </div>
@@ -112,7 +112,15 @@
 
                   <div class="col-md-12">
                     <div>
-
+                            <form action="/nedozvoljeni" method="POST">
+                                <input type="submit" value="Nedozvoljeni recepti" class="btn input-block-level form-control">
+                            </form>
+                            <form action="/dozvoljeni" method="POST">
+                                <input type="submit" value="Dozvoljeni recepti" class="btn input-block-level form-control">
+                            </form>
+                            <form action="/svirecepti" method="POST">
+                                <input type="submit" value="Svi recepti" class="btn input-block-level form-control">
+                            </form>
                     </div>
                             <div class="table-responsive">
                                 <form action="svi_recepti" method="POST">
@@ -123,7 +131,8 @@
                                                 <th>Naziv</th>
                                                 <th>Datum</th>
                                                 <th>Ostavio</th>
-                                                <th>Dozvoli</th>
+                                                <th>Ceo recept</th>
+                                                <th>Dozvoli/Zabrani</th>
                                                 <th>Obrisi</th>
                                             </tr>
                                         </thead>
@@ -133,10 +142,17 @@
                                                     <td>{{recept.receptID}}</td>
                                                     <td>{{recept.naziv}}</td>
                                                     <td>{{recept.napisano}}</td>
-                                                    <td>{{recept.ostavio}}</td>
-                                                    <td><a href="/dozvoli/{{recept.receptID}}">Dozvoli recept</a></td>
-                                                    <td><a href="/obrisi/{{receptID.receptID}}">Obrisi recept</a></td>
-                                                    </tr>
+                                                    <td>{{recept.receptod}}</td>
+                                                  <td><a href="/pogledaj/{{recept.receptID}}">Ceo recept</a></td>
+                                                  <td>
+                                                    {% if recept.dozvoljeno %}
+                                                    <a href="/zabrani/{{recept.receptID}}">Zabrani recept</a>
+                                                    {% else %}
+                                                    <a href="/dozvoli/{{recept.receptID}}">Dozvoli recept</a>
+                                                    {% endif %}
+                                                  </td>
+                                                  <td><a href="/obrisirecept/{{receptID.receptID}}">Obrisi recept</a></td>
+                                                </tr>
                                             {% endfor %}
                                         </tbody>
                                     </table>
