@@ -108,7 +108,7 @@
                         <strong>{{recept.naziv}}</strong>
                     </h2>
                     <hr>
-                  <img src="{{recept.slika}}" alt="{{recept.naziv}}" height="42" width="42">
+
                   <p>
                     {{recept.sastojci}}
                   </p
@@ -116,6 +116,59 @@
                     {{recept.opis}}
                   </p>
                 </div>
+              <div>
+               {{lajkovi}} likes this recepy
+                {% if ovajlajkovao 0 %}
+                                <form role="form"  method="POST" action = "/dodajlajk/{{recept.receptID}}">
+                                        <div class="form-group" hidden>
+                                            <label>Ostavio</label>
+                                           <input type="text" class="form-control" name="lajkovao" value="{{user.username}}"></textarea>
+                                        </div>
+                   <button type="submit" class="btn btn-default">Like</button>
+                </form>
+              {% else %}
+                              <form role="form"  method="POST" action = "/obrisilajk/{{idtoglajka.id}}">
+                                        <div class="form-group" hidden>
+                                            <label>Ostavio</label>
+                                           <input type="text" class="form-control" name="recept" value="{{recept.receptID}}"></textarea>
+                                        </div>
+                   <button type="submit" class="btn btn-default">Dislike</button>
+                </form>
+
+                                                    {% endif %}
+
+              </div>
+                  <div class="col-md-12">
+                            <div class="table-responsive">
+                                <form action="svi_komentari" method="POST">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <tbody>
+                                            {% for komentar in komentari %}
+                                                <tr>
+                                                    <td>{{komentar.ostavio}}</td>
+                                                    <td>{{komentar.tekst}}</td>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                </div>
+
+              <!--<div>
+                <form role="form"  method="POST" action = "/dodajlajk">
+                   <button type="submit" class="btn btn-default">Like</button>
+                </form>
+              </div>-->
+              <div>
+                <form role="form"  method="POST" action = "/dodajkomentar">
+                                        <div class="form-group">
+                                            <label>Komentar</label>
+                                                <textarea class="form-control" rows="5" name="opis">Komentar</textarea>
+                                        </div>
+
+                                            <button type="submit" class="btn btn-default">Dodaj komentar</button>
+                </form>
+              </div>
             </div>
         </div>
 

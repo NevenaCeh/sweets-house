@@ -29,13 +29,39 @@
 (defentity utisak
   (table :utisak))
 
+(defentity lajk
+  (table :lajkovi))
+
+(defentity komentar
+  (table :komentarinarecepte))
+
 (defn vrati-korisnika [username password]
   (select user
   (where {:username username :password password})))
 
+(defn lajkovi-za-recept [id]
+  (select lajk
+  (where {:recept id})))
+
+(defn komentari-za-recept [id]
+  (select komentar
+  (where {:recept id})))
+
 (defn vrati-admina [username password]
   (select admin
   (where {:username username :password password})))
+
+
+(defn ovaj-user-lajkovao [id user]
+  (select lajk
+  (where {:recept id :user user})))
+
+(defn dodaj-lajk-na-recept [receptid ostavio]
+  (println receptid ostavio)
+  (insert lajk
+  (values {:user ostavio
+           :recept receptid
+          })))
 
 (defn dodaj-korisnika [ime prezime email username password]
   (insert user
@@ -92,6 +118,10 @@
 (defn obrisi-utisak [id]
   (delete utisak
   (where {:idUtiska id})))
+
+(defn obrisi-lajk-sa-recepta [id]
+  (delete lajk
+  (where {:id id})))
 
 (defn obrisi-recept [id]
   (delete recept

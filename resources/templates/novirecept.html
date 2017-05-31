@@ -109,7 +109,7 @@
                     </h2>
                     <hr>
                   <h2 style="color:red;">{{error}}</h2>
-                    <form role="form"  method="POST" action = "/addrecipe">
+                    <form role="form"  method="POST" action = "/addrecipe" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <label>Naziv recepta</label>
                                                 <input class="form-control" name="naziv" id="subsystemname" required>
@@ -124,7 +124,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Slika</label>
-                                           <input type="file" name="slika" class="btn btn-default">
+                                           <input type="file" name="file" class="btn btn-default">
                                         </div>
                                         <div class="form-group" hidden>
                                             <label>Ostavio</label>

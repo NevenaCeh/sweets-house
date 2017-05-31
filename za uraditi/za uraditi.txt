@@ -1,5 +1,4 @@
 za uraditi
-izmene
 upload slika
 komentari i lajkovi na recepte
 admin radnje - brisanje recepata

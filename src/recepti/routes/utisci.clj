@@ -17,9 +17,7 @@
   (render-file "templates/utisci.html" {:utisci (db/vrati-utiske) :user (:identity session)}))
 
 (defn get-page-add-impression [{:keys [params session] request :request}]
-  (render-file "templates/dodajutisak.html" {
-                                              ;;:utisakId (db/vrati-poslednji-utisak)
-                                              :user (:identity session)}))
+  (render-file "templates/dodajutisak.html" {:user (:identity session)}))
 
 (defn handle-add-impression [{:keys [params session] request :request}]
   (let [naziv (:naziv params)
@@ -37,7 +35,7 @@
   (redirect "/knjigautisaka"))
 
 (defn edit-own-impression-get-page [{:keys [params session] request :request}]
-      (render-file "templates/dodajutisak.html" {:user (:identity session) :authenticated (str (authenticated session)) :utisak (first (db/vrati-utisak (:id params)))})
+      (render-file "templates/dodajutisak.html" {:user (:identity session) :utisak (first (db/vrati-utisak (:id params))) :authenticated (str (authenticated session))})
 )
 
 (defn handle-edit-own-impression [{:keys [params session] request :request}]
