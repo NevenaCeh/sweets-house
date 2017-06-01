@@ -21,6 +21,9 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
 
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
 </head>
 
 <body>
@@ -118,16 +121,9 @@
                 </div>
               <div>
                {{lajkovi}} likes this recepy
-                {% if ovajlajkovao 0 %}
-                                <form role="form"  method="POST" action = "/dodajlajk/{{recept.receptID}}">
-                                        <div class="form-group" hidden>
-                                            <label>Ostavio</label>
-                                           <input type="text" class="form-control" name="lajkovao" value="{{user.username}}"></textarea>
-                                        </div>
-                   <button type="submit" class="btn btn-default">Like</button>
-                </form>
-              {% else %}
-                              <form role="form"  method="POST" action = "/obrisilajk/{{idtoglajka.id}}">
+
+                {% ifequal ovajlajkovao "true" %}
+                            <form role="form"  method="POST" action = "/obrisilajk/{{idtoglajka.id}}">
                                         <div class="form-group" hidden>
                                             <label>Ostavio</label>
                                            <input type="text" class="form-control" name="recept" value="{{recept.receptID}}"></textarea>
@@ -135,7 +131,17 @@
                    <button type="submit" class="btn btn-default">Dislike</button>
                 </form>
 
-                                                    {% endif %}
+              {% else %}
+
+                                <form role="form"  method="POST" action = "/dodajlajk/{{recept.receptID}}">
+                                        <div class="form-group" hidden>
+                                            <label>Ostavio</label>
+                                           <input type="text" class="form-control" name="lajkovao" value="{{user.username}}"></textarea>
+                                        </div>
+                   <button type="submit" class="btn btn-default">Like</button>
+                </form>
+
+              {% endifequal %}
 
               </div>
                   <div class="col-md-12">
@@ -154,19 +160,13 @@
                             </div>
                 </div>
 
-              <!--<div>
-                <form role="form"  method="POST" action = "/dodajlajk">
-                   <button type="submit" class="btn btn-default">Like</button>
-                </form>
-              </div>-->
-              <div>
-                <form role="form"  method="POST" action = "/dodajkomentar">
-                                        <div class="form-group">
-                                            <label>Komentar</label>
-                                                <textarea class="form-control" rows="5" name="opis">Komentar</textarea>
-                                        </div>
-
-                                            <button type="submit" class="btn btn-default">Dodaj komentar</button>
+             <div>
+                <form role="form"  method="POST" action = "/dodajkomentar/{{recept.receptID}}">
+                      <div class="form-group">
+                            <label>Komentar</label>
+                            <textarea class="form-control" rows="5" name="opis">Komentar</textarea>
+                      </div>
+                      <button type="submit" class="btn btn-default">Dodaj komentar</button>
                 </form>
               </div>
             </div>

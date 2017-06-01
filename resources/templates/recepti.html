@@ -20,6 +20,33 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+  <script>
+ /*     function pretrazi(text) {
+    $.ajax({
+        type: "GET",
+        url: "/recepti",
+        data: {
+            text: text
+        },
+        dataType: 'json',
+        success: function(data) {
+            var listData = "";
+            if (data != null) {
+                for (var i = 0; i < data.length; i++) {
+                    listData += "<tr id='" + data[i].id + "' onclick='getBeer(this.id)' class='clickable-row'>";
+                    listData += "<h4 class="list-group-item-heading">" + data[i].naziv + "</h4>";
+                    listData += "<p class="list-group-item-text">" + data[i].napisano + "</td>";
+                    listData += "<br";
+                }
+            }
+            $("#listarecepata").html(tableData);
+        },
+        error: function(xhr, status, error) {
+            showErrorMessage(xhr.responseText);
+        }
+    });
+}*/
+  </script>
 
 </head>
 
@@ -110,7 +137,8 @@
                     <hr>
                   <img src="/slike recepata/slika4.jpg" class="img-responsive zoom-img"/>
                   <h2 style="color:green;">{{poruka}}</h2>
-                    <div class="list-group">
+                   <!-- <input type="text" name="search" placeholder="Search beers..." onkeyup="pretrazi(this.value);"/>-->
+                    <div class="list-group" id="listarecepata">
                       {% for recept in recepti %}
                       <a href="/vidirecept/{{recept.receptID}}">
                         <img src="{{recept.slika}}" class="img-responsive zoom-img"/>

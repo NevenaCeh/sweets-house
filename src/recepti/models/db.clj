@@ -54,13 +54,23 @@
 
 (defn ovaj-user-lajkovao [id user]
   (select lajk
-  (where {:recept id :user user})))
+  (where {:user user :recept id })))
 
 (defn dodaj-lajk-na-recept [receptid ostavio]
   (println receptid ostavio)
   (insert lajk
   (values {:user ostavio
            :recept receptid
+          })))
+
+(defn dodaj-komentar-na-recept [tekst ostavio datum receptid]
+  (println receptid ostavio)
+  (insert komentar
+  (values {
+            :tekst tekst
+            :ostavio ostavio
+            :datum datum
+             :recept receptid
           })))
 
 (defn dodaj-korisnika [ime prezime email username password]
@@ -144,3 +154,14 @@
 (defn vrati-recept-id [id]
   (select recept
   (where {:receptID id})))
+
+(defn get-text [text]
+  (str "%" text "%"))
+
+(defn nadji-recepte-po-kriterijumu [text]
+  (select recept
+            (where
+              (or (like :naziv (get-text text))
+                  (like :sastojci (get-text text))
+                  (like :opis (get-text text))))
+            (order :naziv :ASC)))

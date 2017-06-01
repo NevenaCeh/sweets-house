@@ -8,7 +8,6 @@
             [noir.io :refer [upload-file resource-path]]
             [hiccup.element :refer [image]]
             [hiccup.util :refer [url-encode]]
-            ;;[clojure.contrib [duck-streams :as ds]]
   )
     (:import [java.io File FileInputStream FileOutputStream]
              [java.awt.image AffineTransformOp BufferedImage]
@@ -48,7 +47,20 @@
   (File. (str path thumb-prefix filename)))))
 
 (defn get-page-of-all-recepies [{:keys [params session] request :request} &[poruka]]
-  (render-file "templates/recepti.html" {:recepti (db/vrati-recepte) :user (:identity session) :authenticated (str (authenticated session)) :poruka poruka}))
+ (if-not (authenticated? session)
+  (redirect "/login")
+  (render-file "templates/recepti.html" {:recepti (db/vrati-recepte) :user (:identity session) :authenticated (str (authenticated session))})))
+
+;(defn nadji-recepte [text]
+ ; (if (or (nil? text)
+  ;        (= "" text))
+   ; (db/vrati-recepte)
+    ;(db/nadji-recepte-po-kriterijumu text)))
+
+;(defn get-page-of-all-recepies [{:keys [params session] request :request} &[poruka]]
+ ; (if-not (authenticated? session)
+  ;(redirect "/login")
+  ;(render-file "templates/recepti.html" {:recepti (nadji-recepte nil) :user (:identity session) :authenticated (str (authenticated session))})))
 
 (defn get-page-add-recipe [{:keys [params session] request :request}]
   (render-file "templates/novirecept.html" {:user (:identity session) :authenticated (str (authenticated session))}))
@@ -70,32 +82,25 @@
         dozvoljeno false
         ]
       (db/dodaj-recept naziv sastojci opis slika napisano receptod dozvoljeno)
-        ;(redirect "/recepti" )
-     (assoc (redirect "/recepti") :poruka "Cekamo vest od administratora!")
-    ))
+     (assoc (redirect "/recepti") :poruka "Cekamo vest od administratora!")))
 
-;(defn get-page-of-recipe [{:keys [params session] request :request}]
- ; (println (:identity session))
-  ;;(println (first (db/vrati-recept-id (:id params))))
- ; (render-file "templates/recept-prikaz.html"
-      ;         {:recept (first (db/vrati-recept-id (:id params)))
-   ;             :user (:identity session)
-       ;         :authenticated (str (authenticated session))}))
+(defn lajkovaouser [id user]
+  (println (some? (first (db/ovaj-user-lajkovao id user))))
+  (some? (first (db/ovaj-user-lajkovao id user))))
 
 (defn get-page-of-recipe [{:keys [params session] request :request}]
-  (println params)
+  (if-not (authenticated? session)
+  (redirect "/login")
   (render-file "templates/recept-prikaz.html"
                {:recept (first (db/vrati-recept-id (:id params)))
                 :lajkovi (count(db/lajkovi-za-recept (:id params)))
-                :ovajlajkovao (count(db/ovaj-user-lajkovao (:id params :username (:identity session))))
-                :idtoglajka (first(db/ovaj-user-lajkovao (:id params :username (:identity session))))
+                :ovajlajkovao (str (lajkovaouser (:id params) (:username (:identity session))))
+                :idtoglajka (first(db/ovaj-user-lajkovao (:id params) (:username (:identity session))))
                 :komentari (db/komentari-za-recept (:id params))
                 :user (:identity session)
-                :authenticated (str (authenticated session))}))
+                :authenticated (str (authenticated session))})))
 
 (defn delete-recepy [{:keys [params session] request :request}]
-  (println "Udje u metodu")
-  (println params)
   (db/obrisi-recept (:id params))
   (redirect "/svirecepti"))
 
@@ -104,18 +109,23 @@
         receptid (:id params)
         ]
       (db/dodaj-lajk-na-recept receptid ostavio)
-        ;(redirect "/recepti" )
-     (redirect (str "/vidirecept/" receptid))
-    ))
+     (redirect (str "/vidirecept/" receptid))))
 
 (defn dislike-to-recipe [{:keys [params session] request :request}]
   (let [lajkid (:id params)
         receptid (:recept params )
         ]
       (db/obrisi-lajk-sa-recepta lajkid)
-        ;(redirect "/recepti" )
-     (redirect (str "/vidirecept/" receptid))
-    ))
+     (redirect (str "/vidirecept/" receptid))))
+
+(defn add-comment-to-recipe [{:keys [params session] request :request}]
+  (let [ostavio (:username (:identity session))
+        receptid (:id params)
+        tekst (:opis params)
+        datum (new java.util.Date)
+        ]
+      (db/dodaj-komentar-na-recept tekst ostavio datum receptid)
+     (redirect (str "/vidirecept/" receptid))))
 
 
 (defroutes recepti-routes
@@ -125,7 +135,8 @@
   (GET "/vidirecept/:id" request (get-page-of-recipe request))
   (POST "/dodajlajk/:id" request (add-like-to-recipe request))
   (POST "/obrisilajk/:id" request (dislike-to-recipe request))
-  ;;(GET "/obrisirecept/:id" request (delete-recepy request))
+  (POST "/dodajkomentar/:id" request (add-comment-to-recipe request))
+  (GET "/obrisirecept/:id" request (delete-recepy request))
 )
 
 ( comment
