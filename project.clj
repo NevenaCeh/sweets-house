@@ -10,7 +10,6 @@
                  [buddy/buddy-auth "1.4.1"]
                  [ring-server "0.4.0"]
                  [lib-noir "0.7.6"]
-                 ;[org.clojure/clojure-contrib "1.2.0-beta1"]
                  [log4j "1.2.15" :exclusions [javax.mail/mail
                             javax.jms/jms
                             com.sun.jdmk/jmxtools

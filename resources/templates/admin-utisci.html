@@ -55,7 +55,7 @@
                         <a href="/sviutisci">Uredi utiske</a>
                     </li>
                     <li>
-                        <a href="/adminlogout">Izloguj se {{admin.username}}</a>
+                        <a href="/logout">Izloguj se {{admin.username}}</a>
                     </li>
                 </ul>
             </div>
@@ -116,7 +116,6 @@
                                     <table class="table table-striped table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
                                                 <th>Naziv</th>
                                                 <th>Opis</th>
                                                 <th>Datum</th>
@@ -127,12 +126,11 @@
                                         <tbody>
                                             {% for utisak in utisci %}
                                                 <tr>
-                                                    <td>{{utisak.idUtiska}}</td>
                                                     <td>{{utisak.naziv}}</td>
                                                     <td>{{utisak.opis}}</td>
                                                     <td>{{utisak.datum}}</td>
                                                     <td>{{utisak.ostavio}}</td>
-                                                    <td><a href="/obrisiutisak/{{utisak.idUtiska}}">Obrisi komentar</a></td>
+                                                    <td><a href="/obrisiutisak/{{utisak.idUtiska}}">Obriši</a></td>
                                                     </tr>
                                             {% endfor %}
                                         </tbody>

@@ -1,5 +1,5 @@
 za uraditi
 
+datum format
 upload slika
 pregled kod usera - ako stignem
-izgled kad udje na stranicu za izmene i jednog recepta???

@@ -135,7 +135,7 @@
                         <strong>Svi recepti</strong>
                     </h2>
                     <hr>
-                  <img src="/slike recepata/slika4.jpg" class="img-responsive zoom-img"/>
+                  <!--<img src="/slike recepata/slika4.jpg" class="img-responsive zoom-img"/>-->
                   <h2 style="color:green;">{{poruka}}</h2>
                    <!-- <input type="text" name="search" placeholder="Search beers..." onkeyup="pretrazi(this.value);"/>-->
                     <div class="list-group" id="listarecepata">
@@ -144,11 +144,8 @@
                         <img src="{{recept.slika}}" class="img-responsive zoom-img"/>
                         <h4 class="list-group-item-heading">{{recept.naziv}}</h4>
                         <p class="list-group-item-text">Date released: {{recept.napisano}}</p>
-
-                        <br>
-
                       </a>
-
+                      </br>
                 {% endfor %}
               </div>
                   <div>

@@ -2,12 +2,13 @@
   (:require [compojure.core :refer :all]
             [selmer.parser :refer [render-file]]
             [recepti.models.db :as db]
-            [ring.util.response :refer [redirect]]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
-            [clojure.java.io :as io]
+            [ring.util.response :refer [response redirect content-type]]
+            ;[clojure.java.io :as io]
             [noir.io :refer [upload-file resource-path]]
             [hiccup.element :refer [image]]
             [hiccup.util :refer [url-encode]]
+            [noir.io :refer [upload-file resource-path]]
   )
     (:import [java.io File FileInputStream FileOutputStream]
              [java.awt.image AffineTransformOp BufferedImage]
@@ -18,8 +19,10 @@
 (defn authenticated [session]
   (authenticated? session))
 
+(def galleries "slike")
+
 (defn gallery-path []
-      "slike")
+(str galleries File/separator))
 
 (def thumb-size 150)
 
@@ -32,19 +35,19 @@
   scale AffineTransformOp/TYPE_BILINEAR)]
   (.filter transform-op img (BufferedImage. width height (.getType img)))))
 
-(defn scale-image [file]
-  (let [img (ImageIO/read file)
-  img-width (.getWidth img)
-  img-height (.getHeight img)
-  ratio (/ thumb-size img-height)]
-  (scale img ratio (int (* img-width ratio)) thumb-size)))
+;(defn scale-image [file]
+ ; (let [img (ImageIO/read file)
+  ;img-width (.getWidth img)
+  ;img-height (.getHeight img)
+ ; ratio (/ thumb-size img-height)]
+  ;(scale img ratio (int (* img-width ratio)) thumb-size)))
 
-(defn save-thumbnail [{:keys [filename]}]
-  (let [path (str (gallery-path) File/separator)]
-  (ImageIO/write
-  (scale-image (io/input-stream (str path filename)))
-  "jpeg"
-  (File. (str path thumb-prefix filename)))))
+;(defn save-thumbnail [{:keys [filename]}]
+ ; (let [path (str (gallery-path) File/separator)]
+  ;(ImageIO/write
+;  (scale-image (io/input-stream (str path filename)))
+ ; "jpeg"
+ ; (File. (str path thumb-prefix filename)))))
 
 (defn get-page-of-all-recepies [{:keys [params session] request :request} &[poruka]]
  (if-not (authenticated? session)
@@ -65,9 +68,9 @@
 (defn get-page-add-recipe [{:keys [params session] request :request}]
   (render-file "templates/novirecept.html" {:user (:identity session) :authenticated (str (authenticated session))}))
 
-(defn upload-picture [file]
+(defn upload-picture [file session]
   (println "U metodi sam za upload")
-    (noir.io/upload-file (gallery-path) file)
+    (upload-file (gallery-path) file)
 )
 
 (defn handle-add-recipe [{:keys [params session] request :request}]
@@ -91,14 +94,21 @@
 (defn get-page-of-recipe [{:keys [params session] request :request}]
   (if-not (authenticated? session)
   (redirect "/login")
-  (render-file "templates/recept-prikaz.html"
-               {:recept (first (db/vrati-recept-id (:id params)))
-                :lajkovi (count(db/lajkovi-za-recept (:id params)))
-                :ovajlajkovao (str (lajkovaouser (:id params) (:username (:identity session))))
-                :idtoglajka (first(db/ovaj-user-lajkovao (:id params) (:username (:identity session))))
-                :komentari (db/komentari-za-recept (:id params))
+  (let [
+         recept (first (db/vrati-recept-id (:id params)))
+         lajkovi (count(db/lajkovi-za-recept (:id params)))
+         on (str (lajkovaouser (:id params) (:username (:identity session))))
+         idlajka (first(db/ovaj-user-lajkovao (:id params) (:username (:identity session))))
+         komentari (db/komentari-za-recept (:id params))
+      ]
+    (render-file "templates/recept-prikaz.html"
+               {:recept recept
+                :lajkovi lajkovi
+                :ovajlajkovao on
+                :idtoglajka idlajka
+                :komentari komentari
                 :user (:identity session)
-                :authenticated (str (authenticated session))})))
+                :authenticated (str (authenticated session))}))))
 
 (defn delete-recepy [{:keys [params session] request :request}]
   (db/obrisi-recept (:id params))
@@ -139,20 +149,3 @@
   (GET "/obrisirecept/:id" request (delete-recepy request))
 )
 
-( comment
-(defn handle-upload [{:keys [filename] :as file}]
-	(upload-page
-	(if (empty? filename)
-	"please select a file to upload"
-	(try
-	(upload-file (gallery-path) file)
-	(save-thumbnail file)
-	(db/add-image (session/get :user) filename)
-	(image {:height "150px"}
-	(thumb-uri (session/get :user) filename))
-	(catch Exception ex
-	(str "error uploading file " (.getMessage ex))))
-    )))
-
-{params :params} (upload-file (get params "file"))
-)
