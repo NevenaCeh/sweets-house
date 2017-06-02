@@ -1,5 +1,5 @@
 za uraditi
 
-datum format
-upload slika
+upload slika radi
+jos prikaz
 pregled kod usera - ako stignem

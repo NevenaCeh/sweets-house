@@ -141,9 +141,9 @@
                     <div class="list-group" id="listarecepata">
                       {% for recept in recepti %}
                       <a href="/vidirecept/{{recept.receptID}}">
-                        <img src="{{recept.slika}}" class="img-responsive zoom-img"/>
+                        <img src="../{{recept.slika}}" class="img-responsive zoom-img"/>
                         <h4 class="list-group-item-heading">{{recept.naziv}}</h4>
-                        <p class="list-group-item-text">Date released: {{recept.napisano}}</p>
+                        <p class="list-group-item-text">Date released: {{recept.napisano|date:"dd.MM.yyyy."}}</p>
                       </a>
                       </br>
                 {% endfor %}

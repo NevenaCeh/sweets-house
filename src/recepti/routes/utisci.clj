@@ -24,10 +24,8 @@
         opis (:opis params)
         ostavio (:ostavio params)
         datum (new java.util.Date)]
-    (println ostavio)
       (db/dodaj-utisak naziv opis ostavio datum)
-        (redirect "/knjigautisaka"))
-)
+        (redirect "/knjigautisaka")))
 
 
 (defn delete-own-impression [{:keys [params session] request :request}]

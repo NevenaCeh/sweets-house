@@ -127,7 +127,7 @@
                                                 <tr>
                                                     <td>{{utisak.naziv}}</td>
                                                     <td>{{utisak.opis}}</td>
-                                                    <td>{{utisak.datum}}</td>
+                                                  <td>{{utisak.datum|date:"dd.MM.yyyy."}}</td>
                                                     <td>{{utisak.ostavio}}</td>
                                                    {% ifequal utisak.ostavio user.username %}
                                                   <td><a href="/obrisisvoj/{{utisak.idUtiska}}">Obriši</a><br>

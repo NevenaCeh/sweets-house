@@ -137,7 +137,7 @@
                                             {% for recept in recepti %}
                                                 <tr>
                                                     <td>{{recept.naziv}}</td>
-                                                    <td>{{recept.napisano}}</td>
+                                                    <td>{{recept.napisano|date:"dd.MM.yyyy."}}</td>
                                                     <td>{{recept.receptod}}</td>
                                                   <td><a href="/pogledaj/{{recept.receptID}}">Ceo recept</a></td>
                                                   <td>

@@ -4,6 +4,7 @@
   :dependencies  [[org.clojure/clojure "1.8.0"]
                  [compojure "1.5.2"]
                  [mysql/mysql-connector-java "5.1.6"]
+                 [postgresql/postgresql "9.1-901.jdbc4"]
                  [org.clojure/java.jdbc "0.6.1"]
                  [korma/korma "0.4.3"]
                  [selmer "1.10.7"]
@@ -25,3 +26,5 @@
     {:open-browser? false, :stacktraces? false, :auto-reload? false}}
    :dev
    {:dependencies [[ring-mock "0.1.5"] [ring/ring-devel "1.3.1"]]}})
+
+

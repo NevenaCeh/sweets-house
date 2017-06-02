@@ -4,8 +4,8 @@
             [recepti.models.db :as db]
             [buddy.auth :refer [authenticated? throw-unauthorized]]
             [ring.util.response :refer [response redirect content-type]]
-            ;[clojure.java.io :as io]
-            [noir.io :refer [upload-file resource-path]]
+            [clojure.java.io :as io]
+            [hiccup.form :refer :all]
             [hiccup.element :refer [image]]
             [hiccup.util :refer [url-encode]]
             [noir.io :refer [upload-file resource-path]]
@@ -22,9 +22,9 @@
 (def galleries "slike")
 
 (defn gallery-path []
-(str galleries File/separator))
+(str galleries))
 
-(def thumb-size 150)
+(def thumb-size 300)
 
 (def thumb-prefix "thumb_")
 
@@ -35,56 +35,50 @@
   scale AffineTransformOp/TYPE_BILINEAR)]
   (.filter transform-op img (BufferedImage. width height (.getType img)))))
 
-;(defn scale-image [file]
- ; (let [img (ImageIO/read file)
-  ;img-width (.getWidth img)
-  ;img-height (.getHeight img)
- ; ratio (/ thumb-size img-height)]
-  ;(scale img ratio (int (* img-width ratio)) thumb-size)))
+(defn scale-image [file]
+  (let [img (ImageIO/read file)
+  img-width (.getWidth img)
+  img-height (.getHeight img)
+  ratio (/ thumb-size img-height)]
+  (scale img ratio (int (* img-width ratio)) thumb-size)))
 
-;(defn save-thumbnail [{:keys [filename]}]
- ; (let [path (str (gallery-path) File/separator)]
-  ;(ImageIO/write
-;  (scale-image (io/input-stream (str path filename)))
- ; "jpeg"
- ; (File. (str path thumb-prefix filename)))))
+(defn save-thumbnail [file ime]
+  (let [path (str (gallery-path) File/separator)]
+  (ImageIO/write
+  (scale-image (io/input-stream (str path (:filename file))))
+  "jpeg"
+  (File. (str path thumb-prefix ime ".jpg")))))
 
 (defn get-page-of-all-recepies [{:keys [params session] request :request} &[poruka]]
  (if-not (authenticated? session)
   (redirect "/login")
   (render-file "templates/recepti.html" {:recepti (db/vrati-recepte) :user (:identity session) :authenticated (str (authenticated session))})))
 
-;(defn nadji-recepte [text]
- ; (if (or (nil? text)
-  ;        (= "" text))
-   ; (db/vrati-recepte)
-    ;(db/nadji-recepte-po-kriterijumu text)))
-
-;(defn get-page-of-all-recepies [{:keys [params session] request :request} &[poruka]]
- ; (if-not (authenticated? session)
-  ;(redirect "/login")
-  ;(render-file "templates/recepti.html" {:recepti (nadji-recepte nil) :user (:identity session) :authenticated (str (authenticated session))})))
-
 (defn get-page-add-recipe [{:keys [params session] request :request}]
   (render-file "templates/novirecept.html" {:user (:identity session) :authenticated (str (authenticated session))}))
 
-(defn upload-picture [file session]
-  (println "U metodi sam za upload")
-    (upload-file (gallery-path) file)
-)
+(defn upload-picture [file ime]
+(try
+(noir.io/upload-file (gallery-path) file :create-path? true)
+(save-thumbnail file ime)
+(image {:height "150px"}
+(str "/img/" thumb-prefix (url-encode (:filename file))))
+(catch Exception ex
+(str "error uploading file " (.getMessage ex)))))
 
 (defn handle-add-recipe [{:keys [params session] request :request}]
-  (upload-picture (:slika params))
-  (println params)
+  ;(println params)
+  (upload-picture (:file params) (:naziv params)) ;radi u chromu, ne u exploreru
   (let [naziv (:naziv params)
         sastojci (:sastojci params)
         opis (:opis params)
         napisano (new java.util.Date)
-        slika (str "/slike recepata/" (:filename (:file params)))
+        slika (str galleries "/" thumb-prefix naziv ".jpg")
         receptod (:receptod params)
         dozvoljeno false
         ]
-      (db/dodaj-recept naziv sastojci opis slika napisano receptod dozvoljeno)
+   (println slika)
+     (db/dodaj-recept naziv sastojci opis slika napisano receptod dozvoljeno)
      (assoc (redirect "/recepti") :poruka "Cekamo vest od administratora!")))
 
 (defn lajkovaouser [id user]
