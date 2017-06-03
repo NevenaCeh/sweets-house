@@ -11,16 +11,10 @@
   (authenticated? session))
 
 (defn get-admin-page [session]
-  ;(cond
-  ;  (not (authenticated session))
-    ; (redirect "/login")
-  ;  :else
      (render-file "templates/admin.html"
                  {
                    :admin (:identity session)
-                  })
-  ;)
-)
+                  }))
 
 (defn get-all-impressions-page [{:keys [params session] request :request}]
   (if-not (authenticated? session)

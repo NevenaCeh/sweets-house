@@ -57,7 +57,9 @@
   (render-file "templates/recepti.html" {:recepti (db/vrati-recepte) :user (:identity session) :authenticated (str (authenticated session))})))
 
 (defn get-page-add-recipe [{:keys [params session] request :request}]
-  (render-file "templates/novirecept.html" {:user (:identity session) :authenticated (str (authenticated session))}))
+  (if-not (authenticated? session)
+  (redirect "/login")
+  (render-file "templates/novirecept.html" {:user (:identity session) :authenticated (str (authenticated session))})))
 
 (defn upload-picture [file ime]
 (try
@@ -137,6 +139,12 @@
       (db/dodaj-komentar-na-recept tekst ostavio datum receptid)
      (redirect (str "/vidirecept/" receptid)))))
 
+(defn search-recipies [{:keys [params session] request :request}]
+  (println params)
+ (if-not (authenticated? session)
+  (redirect "/login")
+  (render-file "templates/recepti.html" {:recepti (db/nadji-recepte-po-kriterijumu (:search params)) :user (:identity session) :authenticated (str (authenticated session))})))
+
 
 (defroutes recepti-routes
   (GET "/recepti" request (get-page-of-all-recepies request))
@@ -147,5 +155,6 @@
   (POST "/obrisilajk/:id" request (dislike-to-recipe request))
   (POST "/dodajkomentar/:id" request (add-comment-to-recipe request))
   (GET "/obrisirecept/:id" request (delete-recepy request))
+  (POST "/pretraga" request (search-recipies request))
 )
 

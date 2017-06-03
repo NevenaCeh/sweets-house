@@ -10,13 +10,6 @@
 (defdb db (mysql {:db "recepti"
                      :user "admin"
                      :password "admin"}))
-
-;(def dbs {:classname "com.mysql.jdbc.Driver"
- ;        :subprotocol "mysql"
-  ;       :subname "//localhost:3306/recepti"
-   ;      :user "admin"
-    ;     :password "admin"})
-
 (defentity user
   (table :korisnici))
 
@@ -169,8 +162,11 @@
 
 (defn nadji-recepte-po-kriterijumu [text]
   (select recept
-            (where
-              (or (like :naziv (get-text text))
-                  (like :sastojci (get-text text))
-                  (like :opis (get-text text))))
-            (order :naziv :ASC)))
+            (where (and
+                     (or
+                       {:naziv [like (get-text text)]}
+                       {:sastojci [like (get-text text)]})
+                     {:dozvoljeno true}
+                     )
+                   )
+            (order :napisano :ASC)))

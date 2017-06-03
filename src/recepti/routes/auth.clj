@@ -5,14 +5,10 @@
             [recepti.models.db :as db]
             [ring.util.response :refer [redirect]]
             ;;[struct.core :as st]
-  )
-)
+  ))
 
 (defn get-login-page [&[error]]
   (render-file "templates/login.html" {:error error}))
-
-(defn get-admin-login-page [&[error]]
-  (render-file "templates/admin-login.html" {:error error}))
 
 (defn handle-admin-login [{:keys [params session] request :request}]
   (println params)
@@ -54,10 +50,6 @@
   (-> (redirect "/login")
       (assoc :session {})))
 
-(defn logout-admin
-  [request]
-  (-> (redirect "/login")
-      (assoc :session {})))
 
 (defn get-registration-page [&[error]]
   (render-file "templates/register.html" {:error error}))
@@ -78,11 +70,8 @@
 
 (defroutes auth-routes
   (GET "/login" [] (get-login-page))
-  ;(GET "/adminlogin" [] (get-admin-login-page))
   (POST "/login" request (handle-login request))
-  ;(POST "/adminlogin" request (handle-admin-login request))
   (GET "/logout" request (logout request))
-  ;(GET "/adminlogout" request (logout-admin request))
   (GET "/register" [] (get-registration-page))
   (POST "/register" request (handle-registration request))
 )

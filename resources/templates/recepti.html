@@ -20,34 +20,6 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
-  <script>
- /*     function pretrazi(text) {
-    $.ajax({
-        type: "GET",
-        url: "/recepti",
-        data: {
-            text: text
-        },
-        dataType: 'json',
-        success: function(data) {
-            var listData = "";
-            if (data != null) {
-                for (var i = 0; i < data.length; i++) {
-                    listData += "<tr id='" + data[i].id + "' onclick='getBeer(this.id)' class='clickable-row'>";
-                    listData += "<h4 class="list-group-item-heading">" + data[i].naziv + "</h4>";
-                    listData += "<p class="list-group-item-text">" + data[i].napisano + "</td>";
-                    listData += "<br";
-                }
-            }
-            $("#listarecepata").html(tableData);
-        },
-        error: function(xhr, status, error) {
-            showErrorMessage(xhr.responseText);
-        }
-    });
-}*/
-  </script>
-
 </head>
 
 <body>
@@ -79,13 +51,16 @@
                         <a href="/recepti">Knjiga recepata</a>
                     </li>
                     <li>
-                        <a href="/addrecipe">Dodaj recept</a>
+                        <a href="/addrecipe">Obogatite našu knjigu recepata</a>
                     </li>
                     <li>
                         <a href="/knjigautisaka">Knjiga utisaka</a>
                     </li>
                     <li>
-                        <a href="/logout">Izloguj se {{user.username}}</a>
+                        <a href="/addutisak">Recite nam Vaše mišljenje</a>
+                    </li>
+                    <li>
+                        <a href="/logout">Izlogujte se {{user.username}}</a>
                     </li>
                 </ul>
             </div>
@@ -135,10 +110,16 @@
                 <div class="col-lg-12">
                     <hr>
                     <h2 class="intro-text text-center">
-                        <strong>Svi recepti</strong>
+                        <strong>Recepti</strong>
                     </h2>
                     <hr>
-                   <!-- <input type="text" name="search" placeholder="Search beers..." onkeyup="pretrazi(this.value);"/>-->
+                    <div style="width: 40%; margin-right: 30%; margin-left: 30%; text-align: center">
+                        <form action="/pretraga" method="POST">
+                                <input type="text" placeholder="Kriterijum pretrage" name="search" id="kp" style="text-align: class="form-control" center"><br>
+                                <input type="submit" value="Pronadji" class="btn input-block-level form-control">
+                            </form>
+                    </div>
+                  <hr>
                   {% for recept in recepti %}
                   <div class="col-lg-12 text-center">
                     <img class="img-responsive img-border img-full" src="{{recept.slika}}" alt="">
