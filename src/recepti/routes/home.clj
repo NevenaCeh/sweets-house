@@ -17,7 +17,7 @@
      (redirect "/login")
     :else
      (render-file "templates/homepage.html"
-                 {:title "Home"
+                 {
                   :user (:identity session)
                  })
   )

@@ -19,10 +19,10 @@
 (defn authenticated [session]
   (authenticated? session))
 
-(def galleries "slike")
+(def galleries "/img/recepti")
 
 (defn gallery-path []
-(str galleries))
+(str "resources/public" galleries))
 
 (def thumb-size 300)
 
@@ -43,7 +43,9 @@
   (scale img ratio (int (* img-width ratio)) thumb-size)))
 
 (defn save-thumbnail [file ime]
-  (let [path (str (gallery-path) File/separator)]
+  (let [
+         path (str (gallery-path) File/separator)
+       ]
   (ImageIO/write
   (scale-image (io/input-stream (str path (:filename file))))
   "jpeg"
@@ -67,7 +69,6 @@
 (str "error uploading file " (.getMessage ex)))))
 
 (defn handle-add-recipe [{:keys [params session] request :request}]
-  ;(println params)
   (upload-picture (:file params) (:naziv params)) ;radi u chromu, ne u exploreru
   (let [naziv (:naziv params)
         sastojci (:sastojci params)
@@ -76,9 +77,10 @@
         slika (str galleries "/" thumb-prefix naziv ".jpg")
         receptod (:receptod params)
         dozvoljeno false
+        kratko (:kratko params)
         ]
    (println slika)
-     (db/dodaj-recept naziv sastojci opis slika napisano receptod dozvoljeno)
+     (db/dodaj-recept naziv sastojci opis slika napisano receptod dozvoljeno kratko)
      (assoc (redirect "/recepti") :poruka "Cekamo vest od administratora!")))
 
 (defn lajkovaouser [id user]
@@ -105,6 +107,8 @@
                 :authenticated (str (authenticated session))}))))
 
 (defn delete-recepy [{:keys [params session] request :request}]
+  (db/obrisi-komentare-za-recept (:id params))
+  (db/obrisi-lajkove-za-recept (:id params))
   (db/obrisi-recept (:id params))
   (redirect "/svirecepti"))
 
@@ -123,13 +127,15 @@
      (redirect (str "/vidirecept/" receptid))))
 
 (defn add-comment-to-recipe [{:keys [params session] request :request}]
+  (if-not (authenticated? session)
+  (redirect "/login")
   (let [ostavio (:username (:identity session))
         receptid (:id params)
         tekst (:opis params)
         datum (new java.util.Date)
         ]
       (db/dodaj-komentar-na-recept tekst ostavio datum receptid)
-     (redirect (str "/vidirecept/" receptid))))
+     (redirect (str "/vidirecept/" receptid)))))
 
 
 (defroutes recepti-routes

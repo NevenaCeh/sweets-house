@@ -109,18 +109,24 @@
                     </h2>
                     <hr>
                   <div class="col-md-12">
-                    <div>
+                    <div class="col-md-4">
                             <form action="/nedozvoljeni" method="POST">
                                 <input type="submit" value="Nedozvoljeni recepti" class="btn input-block-level form-control">
                             </form>
+                    </div>
+                    <div class="col-md-4">
                             <form action="/dozvoljeni" method="POST">
                                 <input type="submit" value="Dozvoljeni recepti" class="btn input-block-level form-control">
                             </form>
+                    </div>
+                      <div class="col-md-4">
                             <form action="/svirecepti" method="POST">
                                 <input type="submit" value="Svi recepti" class="btn input-block-level form-control">
                             </form>
                     </div>
-                            <div class="table-responsive">
+                  </div>
+                  <div class="col-md-12">
+                                              <div class="table-responsive">
                                 <form action="svi_recepti" method="POST">
                                     <table class="table table-striped table-bordered table-hover">
                                         <thead>
@@ -154,12 +160,11 @@
                                     </table>
                                 </form>
                             </div>
+                  </div>
+
                     </div>
                 </div>
             </div>
-        </div>
-
-
     </div>
     <!-- /.container -->
 

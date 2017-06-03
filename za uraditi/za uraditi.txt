@@ -1,5 +1,6 @@
 za uraditi
 
-upload slika radi
-jos prikaz
 pregled kod usera - ako stignem
+
+css - sredjen
+admin - ako stignes dodaj nesto kao aktivni useri...

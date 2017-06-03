@@ -99,7 +99,7 @@
 (defn vrati-poslednji-utisak []
   (select count utisak))
 
-(defn dodaj-recept [naziv sastojci opis slika napisano receptod dozvoljeno]
+(defn dodaj-recept [naziv sastojci opis slika napisano receptod dozvoljeno kratko]
   (insert recept
   (values {:naziv naziv
            :sastojci sastojci
@@ -108,6 +108,7 @@
            :napisano napisano
            :receptod receptod
            :dozvoljeno dozvoljeno
+           :kratakopis kratko
             })))
 
 (defn izmeni-utisak [id naziv opis]
@@ -132,6 +133,14 @@
 (defn obrisi-lajk-sa-recepta [id]
   (delete lajk
   (where {:id id})))
+
+(defn obrisi-komentare-za-recept [id]
+  (delete komentar
+  (where {:recept id})))
+
+(defn obrisi-lajkove-za-recept [id]
+  (delete lajk
+  (where {:recept id})))
 
 (defn obrisi-recept [id]
   (delete recept

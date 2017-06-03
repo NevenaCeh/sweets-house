@@ -79,6 +79,9 @@
                         <a href="/recepti">Knjiga recepata</a>
                     </li>
                     <li>
+                        <a href="/addrecipe">Dodaj recept</a>
+                    </li>
+                    <li>
                         <a href="/knjigautisaka">Knjiga utisaka</a>
                     </li>
                     <li>
@@ -127,7 +130,7 @@
             </div>
         </div>
 
-      <div class="row">
+       <div class="row">
             <div class="box">
                 <div class="col-lg-12">
                     <hr>
@@ -135,21 +138,24 @@
                         <strong>Svi recepti</strong>
                     </h2>
                     <hr>
-                  <!--<img src="/slike recepata/slika4.jpg" class="img-responsive zoom-img"/>-->
-                  <h2 style="color:green;">{{poruka}}</h2>
                    <!-- <input type="text" name="search" placeholder="Search beers..." onkeyup="pretrazi(this.value);"/>-->
-                    <div class="list-group" id="listarecepata">
-                      {% for recept in recepti %}
-                      <a href="/vidirecept/{{recept.receptID}}">
-                        <img src="../{{recept.slika}}" class="img-responsive zoom-img"/>
-                        <h4 class="list-group-item-heading">{{recept.naziv}}</h4>
-                        <p class="list-group-item-text">Date released: {{recept.napisano|date:"dd.MM.yyyy."}}</p>
-                      </a>
-                      </br>
-                {% endfor %}
+                  {% for recept in recepti %}
+                  <div class="col-lg-12 text-center">
+                    <img class="img-responsive img-border img-full" src="{{recept.slika}}" alt="">
+                    <h2>{{recept.naziv}}
+                        <br>
+                        <small>{{recept.napisano|date:"dd.MM.yyyy."}}</small>
+                    </h2>
+                    <p>{{recept.kratakopis}}</p>
+                    <a href="/vidirecept/{{recept.receptID}}" class="btn btn-default btn-lg">Ceo recept</a>
+                    <hr>
+                </div>
+                  {% endfor %}
+
               </div>
-                  <div>
-                    <a href="/addrecipe">Dodaj novi recept</a>
+              <div class="col-lg-5"></div>
+                  <div class="col-lg-6">
+                    <a href="/addrecipe" class="btn btn-default btn-lg">Dodaj novi recept</a>
                   </div>
                 </div>
             </div>

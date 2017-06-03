@@ -20,6 +20,8 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
 
 </head>
 
@@ -73,20 +75,27 @@
                     </h2>
                     <hr>
                   <h2 style="color:red;">{{error}}</h2>
-                    <form role="form" action="login" method="POST">
-                            <div class="form-group input-group">
-                                <span class="input-group-addon"><i class="fa fa-tag"  ></i></span>
-                                <input type="text" class="form-control" placeholder="Korisničko ime" name="username" />
-                            </div>
-                            <div class="form-group input-group">
-                                <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
-                                <input type="password" class="form-control"  placeholder="Korisnička šifra" name="password" />
-                            </div>
-                            <div class="login">
-                                <input type="submit" value="LOGIN" class="btn input-block-level form-control" />
-                            </div>
-                    </form>
-                  Nemate kreiran nalog? <a href="/register">Registrujte se</a>
+                  <div class="col-lg-4"></div>
+                  <div class="col-lg-4">
+                      <form role="form" action="login" method="POST">
+                                <div class="form-group input-group">
+                                    <span class="input-group-addon"><i class="fa fa-tag"  ></i></span>
+                                    <input type="text" class="form-control" placeholder="Korisničko ime" name="username" />
+                                </div>
+                                <div class="form-group input-group">
+                                    <span class="input-group-addon"><i class="fa fa-lock"  ></i></span>
+                                    <input type="password" class="form-control"  placeholder="Korisnička šifra" name="password" />
+                                </div>
+                                <div class="login">
+                                    <input type="submit" value="LOGIN" class="btn input-block-level form-control" />
+                                </div>
+                        </form>
+                    <br>
+                      <div class="text-center">
+                        Nemate kreiran nalog? <a href="/register">Registrujte se</a>
+                    </div>
+                  </div>
+
                 </div>
             </div>
         </div>

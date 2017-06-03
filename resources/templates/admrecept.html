@@ -102,31 +102,35 @@
 
       <div class="row">
             <div class="box">
-                <div class="col-lg-12">
-                    <hr>
-                    <h2 class="intro-text text-center">
+              <div class="col-md-8">
+                <img class="img-responsive" src="{{recept.slika}}" alt="">
+              </div>
+
+              <div class="col-md-4">
+                <h3><h2 class="intro-text text-center">
                         <strong>{{recept.naziv}}</strong>
                     </h2>
-                    <hr>
-                  <div class="col-md-12">
-                    <div>
-                        <p>
-                          {{recept.sastojci}}
-                      </p>
-                      <p>
-                          {{recept.opis}}
-                      </p>
-                    </div>
+                    <hr></h3>
+                <p>{{recept.kratakopis}}</p>
+                <h3>Potrebno</h3>
+                <p>
+                  {{recept.sastojci}}
+                </p>
+                <h3>
+                  Priprema
+                </h3>
+                <p>
+                  {{recept.opis}}
+                </p>
+            </div>
                     {% if recept.dozvoljeno %}
-                      <a href="/zabrani/{{recept.receptID}}">Zabrani recept</a>
+                      <a href="/zabrani/{{recept.receptID}}" class="btn input-block-level form-control">Zabrani recept</a>
                     {% else %}
-                      <a href="/dozvoli/{{recept.receptID}}">Dozvoli recept</a>
+                      <a href="/dozvoli/{{recept.receptID}}" class="btn input-block-level form-control">Dozvoli recept</a>
                     {% endif %}
 
-                    <a href="/obrisi/{{receptID.receptID}}">Obriši recept</a>
+                    <a href="/obrisirecept/{{recept.receptID}}" class="btn input-block-level form-control">Obriši recept</a>
 
-                    </div>
-                </div>
             </div>
         </div>
 
